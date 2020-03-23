@@ -2,25 +2,24 @@ version: '2'
 
 services:
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.1
     environment:
     - "node.name=es-node"
     - "discovery.type=single-node"
     - "cluster.name=app-search-docker-cluster"
     - "bootstrap.memory_lock=true"
     - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ports:
-    - 9200:9200
     ulimits:
       memlock:
         soft: -1
         hard: -1
 
   appsearch:
-    image: docker.elastic.co/app-search/app-search:7.6.0
+    image: docker.elastic.co/app-search/app-search:7.6.1
     environment:
     - "elasticsearch.host=http://elasticsearch:9200"
     - "allow_es_settings_modification=true"
     - "JAVA_OPTS=-Xms2g -Xmx2g"
+    - "secret_session_key=private-d9prbvb7d4yd6n63shn84ins"
     ports:
     - 3002:3002
