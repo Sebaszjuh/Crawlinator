@@ -6,11 +6,11 @@ from crawlinator.items import crawlinatorItem
 
 class PageavailabilitySpider(CrawlSpider):
     handle_httpstatus_list = [400, 403, 404, 500, 502, 503, 504]
-    name = 'pageavailability'
+    name = 'davidsoff'
     # Replace the value with the real domain.
-    allowed_domains = ['example.com']
+    allowed_domains = ['davidsoff.nl']
     # Replace the value with the website URL to crawl from.
-    start_urls = ['http://www.example.com/']
+    start_urls = ['http://www.davidsoff.nl']
     custom_settings = {
         'LOG_FILE': 'logs/pageavailability.log',
         'LOG_LEVEL': 'INFO'
@@ -19,7 +19,6 @@ class PageavailabilitySpider(CrawlSpider):
     rules = (
         Rule(
             LinkExtractor(
-                allow=('/index/'),
                 tags='a',
                 attrs='href',
                 unique=True

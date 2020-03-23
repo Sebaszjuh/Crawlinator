@@ -13,3 +13,4 @@ class crawlinatorItem(scrapy.Item):
     status = scrapy.Field()
     url = scrapy.Field()
     title = scrapy.Field()
+    h1 = scrapy.Field()
