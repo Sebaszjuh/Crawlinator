@@ -14,7 +14,7 @@ class appSearchPipeline(object):
 
         client = Client(
             base_endpoint='localhost:3002/api/as/v1',
-            api_key='private-p1j1xmt5gu33bdyjd5c4ipj6',
+            api_key='private-ukmvt687ezd8brr7t7ajzfa5',
             use_https=False
         )
         engine_name = 'crawlinator'

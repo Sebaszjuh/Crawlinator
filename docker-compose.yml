@@ -23,3 +23,12 @@ services:
     - "secret_session_key=private-d9prbvb7d4yd6n63shn84ins"
     ports:
     - 3002:3002
+
+  torproxy:
+    image: dperson/torproxy
+    ports:
+      - 8118:8118
+
+
+
+

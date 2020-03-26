@@ -26,3 +26,12 @@ services:
     - "JAVA_OPTS=-Xms2g -Xmx2g"
     ports:
     - 3002:3002
+
+  torproxy:
+    image: dperson/torproxy
+    environment:
+      - "location=nl"
+    ports:
+      - 8118:8118
+
+
