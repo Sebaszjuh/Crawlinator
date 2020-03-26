@@ -55,6 +55,13 @@ CONCURRENT_REQUESTS_PER_DOMAIN = 100
 #    'crawlinator.middlewares.crawlinatorDownloaderMiddleware': 543,
 # }
 
+HTTP_PROXY = 'localhost:8118'
+DOWNLOADER_MIDDLEWARES = {
+     'crawlinator.middlewares.ProxyMiddleware': 410,
+     'scrapy.contrib.downloadermiddleware.useragent.UserAgentMiddleware': None
+    # Disable compression middleware, so the actual HTML pages are cached
+}
+
 # Enable or disable extensions
 # See https://doc.scrapy.org/en/latest/topics/extensions.html
 # EXTENSIONS = {

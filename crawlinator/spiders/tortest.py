@@ -10,9 +10,9 @@ class TorSpider(CrawlSpider):
     handle_httpstatus_list = [400, 403, 404, 500, 502, 503, 504]
     name = 'tortest'
     # Replace the value with the real domain.
-    allowed_domains = ['http://torlinkbgs6aabns.onion/']
+    allowed_domains = ['http://hiddenwiki7wiyzr.onion/ ']
     # Replace the value with the website URL to crawl from.
-    start_urls = ['http://torlinkbgs6aabns.onion/']
+    start_urls = ['http://hiddenwiki7wiyzr.onion/ ']
     custom_settings = {
         'LOG_FILE': 'logs/tor.log',
         'LOG_LEVEL': 'INFO'

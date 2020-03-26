@@ -9,18 +9,20 @@ from elastic_app_search import Client
 from scrapy.utils.markup import replace_tags, remove_tags_with_content, replace_escape_chars
 from scrapy.selector import Selector
 import logging
+
+
 class appSearchPipeline(object):
     def process_item(self, item, spider):
-
         client = Client(
             base_endpoint='localhost:3002/api/as/v1',
-            api_key='private-ukmvt687ezd8brr7t7ajzfa5',
+            api_key='private-ba14afx8p8vsvwg2agayfdsz',
             use_https=False
         )
         engine_name = 'crawlinator'
         client.index_document(engine_name, dict(item))
         logging.info(f'Item sent to App Search: {item["title"]}')
         return item
+
 
 class bodyCleanupPipeline(object):
 

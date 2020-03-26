@@ -6,9 +6,13 @@
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
+from scrapy.utils.project import get_project_settings
+
+settings = get_project_settings()
 
 
 class crawlinatorSpiderMiddleware(object):
+
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the spider middleware does not modify the
     # passed objects.
@@ -101,3 +105,8 @@ class crawlinatorDownloaderMiddleware(object):
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
+
+
+class ProxyMiddleware(object):
+    def process_request(self, request, spider):
+        request.meta['localhost:9050'] = settings.get('HTTP_PROXY')
