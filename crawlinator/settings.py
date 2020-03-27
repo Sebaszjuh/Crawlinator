@@ -55,7 +55,7 @@ CONCURRENT_REQUESTS_PER_DOMAIN = 100
 #    'crawlinator.middlewares.crawlinatorDownloaderMiddleware': 543,
 # }
 
-HTTP_PROXY = 'localhost:8118'
+HTTP_PROXY = 'http://localhost:8118'
 DOWNLOADER_MIDDLEWARES = {
      'crawlinator.middlewares.ProxyMiddleware': 410,
      'scrapy.contrib.downloadermiddleware.useragent.UserAgentMiddleware': None

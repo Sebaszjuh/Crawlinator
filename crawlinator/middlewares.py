@@ -109,4 +109,4 @@ class crawlinatorDownloaderMiddleware(object):
 
 class ProxyMiddleware(object):
     def process_request(self, request, spider):
-        request.meta['localhost:9050'] = settings.get('HTTP_PROXY')
+        request.meta['proxy'] = settings.get('HTTP_PROXY')
