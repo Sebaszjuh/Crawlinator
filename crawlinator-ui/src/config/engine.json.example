@@ -1,8 +1,8 @@
 {
-  "endpointBase": "http://127.0.0.1:3002",
-  "engineName": "your-engine-name",
+  "endpointBase": "http://appsearch:3002",
+  "engineName": "crawlinator",
   "hostIdentifier": "host-XXXXX",
-  "searchKey": "search-XXXXXXXXXXXXXXXXXXXXXXX",
+  "searchKey": "private-p1j1xmt5gu33bdyjd5c4ipj6",
   "searchFields": ["title", "description"],
   "resultFields": ["id", "title", "anotherField", "someField", "created"],
   "querySuggestFields": ["title"],

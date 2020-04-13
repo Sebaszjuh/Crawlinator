@@ -28,6 +28,11 @@ services:
     image: dperson/torproxy
     ports:
       - 8118:8118
+  
+  ui:
+    build: crawlinator-ui
+    ports:
+      - 3000:80
 
 
 
