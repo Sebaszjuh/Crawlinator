@@ -11,7 +11,7 @@ RUN npm install
 # Copies everything over to Docker environment
 COPY . .
 
-RUN npm build
+RUN npm run-script build
 
 FROM nginx:1.12-alpine
 COPY --from=build-deps /usr/src/app/build /usr/share/nginx/html

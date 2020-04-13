@@ -1,4 +1,4 @@
-import config from "./engine.json.example";
+import config from "./engine.json";
 
 /**
  * This file abstracts most logic around the configuration of the Reference UI.
