@@ -7,15 +7,15 @@
     "title",
     "body",
     "url",
-    "status",
-    "id"
+    "datetime"
   ],
   "sortFields": [
     "title",
     "status"
   ],
   "facets": [
-    "status"
+    "status",
+    "date"
   ],
   "titleField": "title",
   "urlField": "url"

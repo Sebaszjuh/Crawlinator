@@ -4,10 +4,11 @@ from scrapy.spiders import CrawlSpider, Rule
 from crawlinator.items import crawlinatorItem
 
 import hashlib
+from datetime import datetime
 
 
 class TorSpider(CrawlSpider):
-    handle_httpstatus_list = [400, 403, 404, 500, 502, 503, 504]
+    handle_httpstatus_list = [200]
     name = 'tortest'
     # Replace the value with the real domain.
     allowed_domains = ['onion']
@@ -37,4 +38,8 @@ class TorSpider(CrawlSpider):
         item['url'] = response.url
         item['status'] = response.status
         item['body'] = response.text
+        item['date'] = datetime.today().strftime("%d/%m/%Y")
+        item['time'] = datetime.today().strftime("%H:%M:%S")
+        item['datetime'] = item['date'] + ", " + item['time']
+
         return item

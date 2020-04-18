@@ -16,3 +16,6 @@ class crawlinatorItem(scrapy.Item):
     title = scrapy.Field()
     h1 = scrapy.Field()
     body = scrapy.Field()
+    date = scrapy.Field()
+    time = scrapy.Field()
+    datetime = scrapy.Field()
