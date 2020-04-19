@@ -38,7 +38,7 @@ function capitalizeFirstLetter(string) {
 export function getTitleField() {
   // If no title field configuration has been provided, we attempt
   // to use a "title" field, if one exists
-  return getConfig().titleField || "title";
+  return getConfig().titleField || "Standard Title";
 }
 
 export function getUrlField() {
@@ -71,7 +71,7 @@ export function stripUnnecessaryResultFields(resultFields) {
       [
         "_meta",
         "id",
-        //Onduidelijk waar dit voor dient
+        //Search fields in search bar
         toLowerCase(getTitleField()),
         toLowerCase(getUrlField()),
         toLowerCase(getBodyField())

@@ -1,6 +1,7 @@
 import React from "react";
 
 import AppSearchAPIConnector from "@elastic/search-ui-app-search-connector";
+import CSS from './App.module.css'
 
 import {
   ErrorBoundary,
@@ -54,24 +55,26 @@ export default function App() {
                 <Layout
                   header={<SearchBox autocompleteSuggestions={true} />}
                   sideContent={
-                    <div>
+                    <div className={CSS.Sorting}>
                       {wasSearched && (
                         <Sorting
                           label={"Sort by"}
+
                           sortOptions={buildSortOptionsFromConfig()}
                         />
                       )}
                       {getFacetFields().map(field => (
-                        <Facet key={field} field={field} label={field} />
+                        <Facet key={field} field={field} label={field}  />
                       ))}
                     </div>
                   }
                   bodyContent={
-                    <Results
+                    <Results className={CSS.Result}
                       titleField={getConfig().titleField}
                       urlField={getConfig().urlField}
                       bodyField={getConfig().bodyField}
                       shouldTrackClickThrough={true}
+
                     />
                   }
                   bodyHeader={
@@ -80,7 +83,7 @@ export default function App() {
                       {wasSearched && <ResultsPerPage />}
                     </React.Fragment>
                   }
-                  bodyFooter={<Paging />}
+                  bodyFooter={<Paging/>}
                 />
               </ErrorBoundary>
             </div>
