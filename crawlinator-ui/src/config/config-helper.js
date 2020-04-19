@@ -45,6 +45,10 @@ export function getUrlField() {
   return getConfig().urlField;
 }
 
+export function getBodyField(){
+  return getConfig().bodyField;
+}
+
 export function getFacetFields() {
   return getConfig().facets || [];
 }
@@ -67,8 +71,10 @@ export function stripUnnecessaryResultFields(resultFields) {
       [
         "_meta",
         "id",
+        //Onduidelijk waar dit voor dient
         toLowerCase(getTitleField()),
-        toLowerCase(getUrlField())
+        toLowerCase(getUrlField()),
+        toLowerCase(getBodyField())
       ].includes(toLowerCase(n))
     ) {
       return acc;
@@ -106,7 +112,7 @@ export function buildSearchOptionsFromConfig() {
   );
 
   // We can't use url or title fields unless they're actually
-  // in the reuslts.
+  // in the results.
   if (config.urlField) {
     resultFields[config.urlField] = {
       raw: {},

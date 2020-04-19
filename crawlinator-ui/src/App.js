@@ -57,7 +57,7 @@ export default function App() {
                     <div>
                       {wasSearched && (
                         <Sorting
-                          label={"Sort by "}
+                          label={"Sort by"}
                           sortOptions={buildSortOptionsFromConfig()}
                         />
                       )}
@@ -70,6 +70,7 @@ export default function App() {
                     <Results
                       titleField={getConfig().titleField}
                       urlField={getConfig().urlField}
+                      bodyField={getConfig().bodyField}
                       shouldTrackClickThrough={true}
                     />
                   }
