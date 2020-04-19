@@ -4,12 +4,16 @@
   "endpointBase": "http://localhost:3002",
   "searchKey": "search-fy7otfyt7qinf9631carou7n",
   "resultFields": [
+    "title",
+    "url",
     "body",
-    "datetime"
+    "datetime",
+    "date"
   ],
   "sortFields": [
     "title",
-    "status"
+    "status",
+    "date"
   ],
   "facets": [
     "status",

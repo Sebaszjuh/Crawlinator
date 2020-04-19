@@ -1,10 +1,4 @@
-.Sorting{
-
-
-}
-
-.Result{
-    border:solid green;
-    border-radius: 15px;
-    color: black;
+.Result {
+    border: solid 1px #86BD25;
+    border-radius: 5px;
 }
