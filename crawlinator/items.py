@@ -19,3 +19,4 @@ class crawlinatorItem(scrapy.Item):
     date = scrapy.Field()
     time = scrapy.Field()
     datetime = scrapy.Field()
+    threat = scrapy.Field()

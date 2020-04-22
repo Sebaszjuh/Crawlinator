@@ -2,7 +2,7 @@
   "engineName": "crawlinator",
   "hostIdentifier": "host-b2w7b8",
   "endpointBase": "http://localhost:3002",
-  "searchKey": "search-fy7otfyt7qinf9631carou7n",
+  "searchKey": "search-xwpbontzy2zo5reqogq6rq9s",
   "resultFields": [
     "title",
     "url",
@@ -17,7 +17,8 @@
   ],
   "facets": [
     "status",
-    "date"
+    "date",
+    "threat"
   ],
   "titleField": "title",
   "urlField": "url",
