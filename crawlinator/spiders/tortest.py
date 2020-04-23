@@ -41,11 +41,13 @@ class TorSpider(CrawlSpider):
         item['date'] = datetime.today().strftime("%d/%m/%Y")
         item['time'] = datetime.today().strftime("%H:%M:%S")
         item['datetime'] = item['date'] + ", " + item['time']
-        if response.xpath("//*[contains(text(),'bitcoin')]"):
-            item['threat'] = 'Bitcoin'
+
+        keyword_list = ['Bitcoin', 'hidden', 'bitcoin', 'login']
+
+        for word in keyword_list:
+            if response.xpath('//*[contains(text(),"%s")]' % word):
+                item['threat'] = word
         else:
             item['threat'] = 'No Specific threat detected'
 
         return item
-
-
