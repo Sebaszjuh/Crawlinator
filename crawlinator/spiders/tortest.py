@@ -5,6 +5,7 @@ from crawlinator.items import crawlinatorItem
 
 import hashlib
 from datetime import datetime
+import urllib
 
 
 class TorSpider(CrawlSpider):
@@ -35,7 +36,7 @@ class TorSpider(CrawlSpider):
         item = crawlinatorItem()
         item['id'] = hashlib.sha256(response.url.encode('utf-8')).hexdigest()
         item['title'] = response.css('title::text').extract_first()
-        item['url'] = response.url
+        item['url'] = self.make_usable_url(response.url)
         item['status'] = response.status
         item['body'] = response.text
         item['date'] = datetime.today().strftime("%d/%m/%Y")
@@ -44,10 +45,17 @@ class TorSpider(CrawlSpider):
 
         keyword_list = ['Bitcoin', 'hidden', 'bitcoin', 'login']
         
-        item['threat'] = [
-            word
+        item['threat'] = list(set([
+            word.lower()
             for word in keyword_list 
             if response.xpath('//*[contains(text(),"%s")]' % word)
-        ]
+        ]))
 
         return item
+
+    def make_usable_url(self, url):
+        split = urllib.parse.urlsplit(url)
+        split = split._replace(netloc=f'{split.netloc}.sh')
+        return urllib.parse.urlunsplit(split)
+
+        
