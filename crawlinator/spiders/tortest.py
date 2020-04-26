@@ -43,11 +43,9 @@ class TorSpider(CrawlSpider):
         item['time'] = datetime.today().strftime("%H:%M:%S")
         item['datetime'] = item['date'] + ", " + item['time']
 
-        keyword_list = ['Bitcoin', 'hidden', 'bitcoin', 'login']
-        
         item['threat'] = list(set([
             word.lower()
-            for word in keyword_list 
+            for word in self.threat_keywords()
             if response.xpath('//*[contains(text(),"%s")]' % word)
         ]))
 
@@ -58,4 +56,8 @@ class TorSpider(CrawlSpider):
         split = split._replace(netloc=f'{split.netloc}.sh')
         return urllib.parse.urlunsplit(split)
 
-        
+    def threat_keywords(self):
+        keywords = []
+        for word in open('keyword-list.txt', 'r'):
+            keywords.append(word.rstrip('\n'))
+        return keywords
