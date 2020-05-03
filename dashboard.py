@@ -68,6 +68,10 @@ if __name__ == "__main__":
     frame = tk.Frame(root, bg="#FFC0CB")
     frame.place(relwidth=1, relheight=1)
 
+    label = Label(frame, text="Crawlinator Dashboard", bg="#FFC0CB")
+    label.config(font=("Courier", 22))
+    label.pack()
+
     listbox = Listbox(frame)
     listbox.pack()
 
