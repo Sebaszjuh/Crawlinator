@@ -3,7 +3,7 @@ from scrapy.utils.project import get_project_settings
 
 from crawlinator.spiders.davidsoff import DavidSoffSpider
 from crawlinator.spiders.ziggo import ZiggoSpider
-from crawlinator.spiders.tortest import TorSpider
+from crawlinator.spiders.tor import TorSpider
 
 
 process = CrawlerProcess(get_project_settings())
