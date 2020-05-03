@@ -24,7 +24,9 @@ def runCrawler(crawlerName):
     p = multiprocessing.Process(target=runCrawlerScript, args=(crawlerName, className))
     p.start()
 
-    'runCrawlerScript(crawlerName, className)'
+    btnStop = tk.Button(frame, text="Stop crawler " + className, padx="10", pady="10", fg="black", bg="#f8f8f8",
+                        command=lambda: stopCrawler(p, btnStop))
+    btnStop.pack()
 
 def runCrawlerScript(crawlerName, className):
     import_from("crawlinator.spiders." + crawlerName[:-3], className)
@@ -32,10 +34,11 @@ def runCrawlerScript(crawlerName, className):
     process.crawl(crawlerName[:-3])
     process.start()
 
-    '''module = importlib.import_module(className, package="crawlinator.spiders." + crawlerName[:-3])'''
-
+def stopCrawler(process, btnStop):
+    process.terminate()
+    btnStop.pack_forget()
 '''
-dynamic import
+dynamically import stuff with variables
 '''
 def import_from(module, name):
     module = __import__(module, fromlist=[name])
