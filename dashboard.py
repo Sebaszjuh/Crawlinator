@@ -12,7 +12,7 @@ import multiprocessing
 def findCrawlers():
     listbox.delete('0', 'end')
     default_path = "crawlinator/spiders"
-    files = [fl for fl in os.listdir(default_path) if fl.endswith('.py')]
+    files = [fl for fl in os.listdir(default_path) if fl.endswith('.py') and not fl == "__init__.py"]
 
     for file in files:
         listbox.insert(END, file)
@@ -79,7 +79,7 @@ def openCreateNewLoginScraper():
 if __name__ == "__main__":
     root = tk.Tk()
 
-    canvas = tk.Canvas(root, height=500, width=300, bg='#ffffff')
+    canvas = tk.Canvas(root, height=500, width=500, bg='#ffffff')
     canvas.pack()
 
     frame = tk.Frame(root, bg="#FFC0CB")
