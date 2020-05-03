@@ -59,6 +59,10 @@ def getClassName(crawlerName):
         return class_.name
 
 
+def openCreateNewLoginScraper():
+    newWindow = tk.Toplevel(root)
+
+
 if __name__ == "__main__":
     root = tk.Tk()
 
@@ -77,13 +81,19 @@ if __name__ == "__main__":
 
     findCrawlers()
 
-    btnAddLogin = tk.Button(frame, text="Refresh Crawlers", padx="10", pady="10", fg="black", bg="#f8f8f8",
+    btnRefresh = tk.Button(frame, text="Refresh Crawlers", padx="10", pady="10", fg="black", bg="#f8f8f8",
                             command=findCrawlers)
-    btnAddLogin.pack()
+    btnRefresh.pack()
 
     btnCrawl = tk.Button(frame, text="Crawl", padx="10", pady="10", fg="black", bg="#f8f8f8",
                          command=lambda: runCrawler(listbox.get(listbox.curselection())))
     btnCrawl.pack()
+
+
+    buttonExample = tk.Button(frame,
+                              text="Create new crawler with login",padx="10", pady="10", fg="black", bg="#f8f8f8",
+                              command=openCreateNewLoginScraper)
+    buttonExample.pack()
 
     label = Label(frame, text="Running crawlers:", bg="#FFC0CB")
     label.pack()
