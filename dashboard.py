@@ -61,7 +61,7 @@ def getClassName(crawlerName):
 if __name__ == "__main__":
     root = tk.Tk()
 
-    canvas = tk.Canvas(root, height=700, width=700, bg='#ffffff')
+    canvas = tk.Canvas(root, height=500, width=300, bg='#ffffff')
     canvas.pack()
 
     frame = tk.Frame(root, bg="#FFC0CB")
