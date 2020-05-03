@@ -64,8 +64,8 @@ if __name__ == "__main__":
     canvas = tk.Canvas(root, height=700, width=700, bg='#ffffff')
     canvas.pack()
 
-    frame = tk.Frame(root, bg="black")
-    frame.place(relwidth=0.8, relheight=0.8, relx=0.1, rely=0.1)
+    frame = tk.Frame(root, bg="#FFC0CB")
+    frame.place(relwidth=1, relheight=1)
 
     listbox = Listbox(frame)
     listbox.pack()
@@ -77,5 +77,8 @@ if __name__ == "__main__":
     btnCrawl = tk.Button(frame, text="Crawl", padx="10", pady="10", fg="black", bg="#f8f8f8",
                          command=lambda: runCrawler(listbox.get(listbox.curselection())))
     btnCrawl.pack()
+
+    label = Label(frame, text="Running crawlers:", bg="#FFC0CB")
+    label.pack()
 
     root.mainloop()
