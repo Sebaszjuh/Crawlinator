@@ -7,6 +7,7 @@ import ast
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 import importlib
+import multiprocessing
 
 def findCrawlers():
     default_path = "crawlinator/spiders"
@@ -19,7 +20,11 @@ def findCrawlers():
 
 def runCrawler(crawlerName):
     className = getClassName(crawlerName)
-    runCrawlerScript(crawlerName, className)
+
+    p = multiprocessing.Process(target=runCrawlerScript, args=(crawlerName, className))
+    p.start()
+
+    'runCrawlerScript(crawlerName, className)'
 
 def runCrawlerScript(crawlerName, className):
     import_from("crawlinator.spiders." + crawlerName[:-3], className)
@@ -49,26 +54,25 @@ def getClassName(crawlerName):
     for class_ in classes:
         return class_.name
 
-root = tk.Tk()
 
-canvas = tk.Canvas(root, height=700, width=700, bg='#ffffff')
-canvas.pack()
+if __name__ == "__main__":
+    root = tk.Tk()
 
-frame = tk.Frame(root, bg="black")
-frame.place(relwidth=0.8, relheight=0.8, relx=0.1, rely=0.1)
+    canvas = tk.Canvas(root, height=700, width=700, bg='#ffffff')
+    canvas.pack()
 
-listbox = Listbox(frame)
-listbox.pack()
+    frame = tk.Frame(root, bg="black")
+    frame.place(relwidth=0.8, relheight=0.8, relx=0.1, rely=0.1)
 
-btnAddLogin = tk.Button(frame, text = "Load Crawlers", padx="10", pady="10", fg="black", bg="#f8f8f8", command=findCrawlers)
-btnAddLogin.pack()
+    listbox = Listbox(frame)
+    listbox.pack()
 
-btnCrawl = tk.Button(frame, text = "Crawl", padx="10", pady="10", fg="black", bg="#f8f8f8", command= lambda: runCrawler(listbox.get(listbox.curselection())))
-btnCrawl.pack()
+    btnAddLogin = tk.Button(frame, text="Load Crawlers", padx="10", pady="10", fg="black", bg="#f8f8f8",
+                            command=findCrawlers)
+    btnAddLogin.pack()
 
+    btnCrawl = tk.Button(frame, text="Crawl", padx="10", pady="10", fg="black", bg="#f8f8f8",
+                         command=lambda: runCrawler(listbox.get(listbox.curselection())))
+    btnCrawl.pack()
 
-
-root.mainloop()
-
-
-
+    root.mainloop()
