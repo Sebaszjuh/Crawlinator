@@ -25,7 +25,7 @@ def runCrawler(crawlerName):
     p = multiprocessing.Process(target=runCrawlerScript, args=(crawlerName, className))
     p.start()
 
-    btnStop = tk.Button(frame, text="Stop crawler " + className, padx="10", pady="10", fg="black", bg="#f8f8f8",
+    btnStop = tk.Button(frame, text="Stop crawling " + className, padx="10", pady="10", fg="black", bg="#f8f8f8",
                         command=lambda: stopCrawler(p, btnStop))
     btnStop.pack()
 
@@ -60,8 +60,21 @@ def getClassName(crawlerName):
 
 
 def openCreateNewLoginScraper():
-    newWindow = tk.Toplevel(root)
-
+    newWindow = tk.Toplevel(root, bg="#FFC0CB")
+    label = Label(newWindow, text="Website", bg="#FFC0CB")
+    label.pack()
+    nameEntered = tk.Entry(newWindow, width=25, bg="#FFC0CB")
+    nameEntered.pack()
+    label = Label(newWindow, text="Username", bg="#FFC0CB")
+    label.pack()
+    nameEntered = tk.Entry(newWindow, width=25, bg="#FFC0CB")
+    nameEntered.pack()
+    label = Label(newWindow, text="Password", bg="#FFC0CB")
+    label.pack()
+    nameEntered = tk.Entry(newWindow, width=25, bg="#FFC0CB")
+    nameEntered.pack()
+    btnAddCrawler = tk.Button(newWindow, text="Create crawler", padx="10", pady="10", fg="black", bg="#f8f8f8")
+    btnAddCrawler.pack()
 
 if __name__ == "__main__":
     root = tk.Tk()
