@@ -10,6 +10,7 @@ import importlib
 import multiprocessing
 
 def findCrawlers():
+    listbox.delete('0', 'end')
     default_path = "crawlinator/spiders"
     files = [fl for fl in os.listdir(default_path) if fl.endswith('.py')]
 
@@ -70,7 +71,9 @@ if __name__ == "__main__":
     listbox = Listbox(frame)
     listbox.pack()
 
-    btnAddLogin = tk.Button(frame, text="Load Crawlers", padx="10", pady="10", fg="black", bg="#f8f8f8",
+    findCrawlers()
+
+    btnAddLogin = tk.Button(frame, text="Refresh Crawlers", padx="10", pady="10", fg="black", bg="#f8f8f8",
                             command=findCrawlers)
     btnAddLogin.pack()
 
