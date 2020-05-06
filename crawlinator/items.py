@@ -10,6 +10,13 @@ import scrapy
 
 class crawlinatorItem(scrapy.Item):
     # define the fields for your item here like:
+    id = scrapy.Field()
     status = scrapy.Field()
     url = scrapy.Field()
     title = scrapy.Field()
+    h1 = scrapy.Field()
+    body = scrapy.Field()
+    date = scrapy.Field()
+    time = scrapy.Field()
+    datetime = scrapy.Field()
+    threat = scrapy.Field()

@@ -1,0 +1,16 @@
+.header{
+    color: #86BD25;
+    font-size: xx-large;
+    text-decoration: none;
+}
+
+.url{
+    font-size: small;
+    margin-top: -5px;
+    margin-left: -5px;
+}
+
+.details{
+    font-style: italic;
+    margin-top: -5px;
+}

@@ -1,0 +1,26 @@
+{
+  "engineName": "crawlinator",
+  "hostIdentifier": "host-b2w7b8",
+  "endpointBase": "http://localhost:3002",
+  "searchKey": "search-naf8gpm5x4dhzn5kjx6syrav",
+  "resultFields": [
+    "title",
+    "url",
+    "body",
+    "datetime",
+    "date"
+  ],
+  "sortFields": [
+    "title",
+    "status",
+    "date"
+  ],
+  "facets": [
+    "status",
+    "date",
+    "threat"
+  ],
+  "titleField": "title",
+  "urlField": "url",
+  "bodyField": "body"
+}

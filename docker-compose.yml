@@ -2,7 +2,7 @@ version: '2'
 
 services:
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.1
     environment:
     - "node.name=es-node"
     - "discovery.type=single-node"
@@ -15,10 +15,25 @@ services:
         hard: -1
 
   appsearch:
-    image: docker.elastic.co/app-search/app-search:7.6.0
+    image: docker.elastic.co/app-search/app-search:7.6.1
     environment:
     - "elasticsearch.host=http://elasticsearch:9200"
     - "allow_es_settings_modification=true"
     - "JAVA_OPTS=-Xms2g -Xmx2g"
+    - "secret_session_key=private-d9prbvb7d4yd6n63shn84ins"
     ports:
     - 3002:3002
+
+  torproxy:
+    image: dperson/torproxy
+    ports:
+      - 8118:8118
+  
+  ui:
+    build: crawlinator-ui
+    ports:
+      - 3000:80
+
+
+
+
