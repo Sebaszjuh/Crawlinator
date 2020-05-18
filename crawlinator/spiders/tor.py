@@ -10,7 +10,7 @@ import urllib
 
 class TorSpider(CrawlSpider):
     handle_httpstatus_list = [200]
-    name = 'tortest'
+    name = 'tor'
     # Replace the value with the real domain.
     allowed_domains = ['onion']
     # Replace the value with the website URL to crawl from.
