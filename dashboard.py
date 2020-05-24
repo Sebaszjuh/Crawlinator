@@ -1,13 +1,13 @@
 import tkinter as tk
 from tkinter import *
 import os
-from pathlib import Path
-from inspect import getmembers, isfunction, ismethod, isclass
 import ast
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 import importlib
 import multiprocessing
+import hashlib
+
 
 def findCrawlers():
     listbox.delete('0', 'end')
@@ -19,6 +19,7 @@ def findCrawlers():
 
     return files
 
+
 def runCrawler(crawlerName):
     className = getClassName(crawlerName)
 
@@ -28,6 +29,7 @@ def runCrawler(crawlerName):
     btnStop = tk.Button(frame, text="Stop crawling " + className, padx="10", pady="10", fg="black", bg="#f8f8f8",
                         command=lambda: stopCrawler(p, btnStop))
     btnStop.pack()
+
 
 def runCrawlerScript(crawlerName, className):
     print("HALLOOOOOOO1")
@@ -39,19 +41,27 @@ def runCrawlerScript(crawlerName, className):
     print("HALLOOOOOOO4")
     process.start()
 
+
 def stopCrawler(process, btnStop):
     process.terminate()
     btnStop.pack_forget()
+
+
 '''
 dynamically import stuff with variables
 '''
+
+
 def import_from(module, name):
     module = __import__(module, fromlist=[name])
     return getattr(module, name)
 
+
 '''
 Used to get the class name of a python file. We need this in order to generate the code to run the crawler.
 '''
+
+
 def getClassName(crawlerName):
     default_path = "crawlinator/spiders"
     filename = default_path + "/" + crawlerName
@@ -85,19 +95,75 @@ def openCreateNewLoginScraper():
     label.pack()
     passwordTextbox = tk.Entry(newWindow, width=25, bg="#FFC0CB")
     passwordTextbox.pack()
-    btnAddCrawler = tk.Button(newWindow, text="Create crawler", padx="10", pady="10", fg="black", bg="#f8f8f8", command=lambda: createNewScript(usernameTextbox.get(), passwordTextbox.get(), startUrlTextbox.get(), loginUrlTextbox.get(), nameTextbox.get()))
+    btnAddCrawler = tk.Button(newWindow, text="Create crawler", padx="10", pady="10", fg="black", bg="#f8f8f8",
+                              command=lambda: createNewScript(usernameTextbox.get(),
+                                                              hashPassword(passwordTextbox.get()),
+                                                              startUrlTextbox.get(), loginUrlTextbox.get(),
+                                                              nameTextbox.get()))
     btnAddCrawler.pack()
+
+
+def hashPassword(password):
+    salt = "-WOu@p.Za,>W+6&`A63/"
+    user_password = password
+    sha = hashlib.sha256()
+    sha.update((user_password + salt).encode('utf-8'))
+    encrypted = sha.hexdigest()
+    return encrypted
 
 
 def createNewScript(username, password, url, loginUrl, name):
     if username == "" and password == "" and loginUrl == "":
-        newScript = "from scrapy.linkextractors import LinkExtractor\nfrom scrapy.spiders import CrawlSpider, Rule\nfrom crawlinator.items import crawlinatorItem\nimport hashlib\nclass "+name+"Spider(CrawlSpider):\n    handle_httpstatus_list = [400, 403, 404, 500, 502, 503, 504]\n    name = '" + name + "'\n    allowed_domains = ['" + url + "']\n    start_urls = ['" + url + "']\n    custom_settings = {\n        'LOG_FILE': 'logs/" + name + ".log',\n        'LOG_LEVEL': 'INFO'\n    }\n    rules = (\n        Rule(\n            LinkExtractor(\n                tags='a',\n                attrs='href',\n                unique=True\n            ),\n            callback='parse_item',\n            follow=True\n        ),\n    )\n    def parse_item(self, response):\n        item = crawlinatorItem()\n        item['id'] = hashlib.sha256(response.url.encode('utf-8')).hexdigest()\n        item['title'] = response.css('title::text').extract_first()\n        item['url'] = response.url\n        item['status'] = response.status\n        item['body'] = response.text\n        return item"
-        with open("crawlinator/spiders/"+name + ".py", "w") as text_file:
-            print(newScript, file=text_file)
-    else:
-        newScript = "from crawlinator.items import crawlinatorItem\nimport scrapy\nfrom loginform import fill_login_form\nfrom scrapy.linkextractors import LinkExtractor\nfrom scrapy.spiders import CrawlSpider, Rule\nimport hashlib\nclass " + name + "Spider(CrawlSpider):\n    handle_httpstatus_list = [400, 403, 404, 500, 502, 503, 504]\n    name = '" + name + "'\n    allowed_domains = ['onion']\n    start_urls = ['" + url + "']\n    login_url = '" + loginUrl + "'\n    login_password = '" + password + "'\n    login_user = '" + username + "'\n    custom_settings = {\n        'LOG_FILE': 'logs/" + name + ".log',\n        'LOG_LEVEL': 'INFO'\n    }\n    rules = (\n        Rule(\n            LinkExtractor(\n                tags='a',\n                attrs='href',\n                unique=True\n            ),\n            callback='parse_item',\n            follow=True\n        ),\n    )\n    def start_requests(self):\n        yield scrapy.Request(self.login_url, self.parse_login)\n    def parse_login(self, response):\n        data, url, method = fill_login_form(response.url, response.body, self.login_user, self.login_password)\n        return scrapy.FormRequest(url, formdata=dict(data), method=method, callback=self.start_crawl)\n    def start_crawl(self, response):\n        for url in self.start_urls:\n            yield scrapy.Request(url)\n    def parse_item(self, response):\n        item = crawlinatorItem()\n        item['id'] = hashlib.sha256(response.url.encode('utf-8')).hexdigest()\n        item['title'] = response.css('title::text').extract_first()\n        item['url'] = response.url\n        item['status'] = response.status\n        item['body'] = response.text\n        return item"
+        newScript = "from scrapy.linkextractors import LinkExtractor\nfrom scrapy.spiders import CrawlSpider, " \
+                    "Rule\nfrom crawlinator.items import crawlinatorItem\nimport hashlib\nclass " + name + "Spider(" \
+                                                                                                           "CrawlSpider):\n    handle_httpstatus_list = [400, 403, 404, 500, 502, 503, 504]\n    name = '" + name + "'\n    allowed_domains = ['" + url + "']\n    start_urls = ['" + url + "']\n    custom_settings = {\n        'LOG_FILE': 'logs/" + name + ".log',\n        'LOG_LEVEL': 'INFO'\n    }\n    rules = (\n        Rule(\n            LinkExtractor(\n                tags='a',\n                attrs='href',\n                unique=True\n            ),\n            callback='parse_item',\n            follow=True\n        ),\n    )\n    def parse_item(self, response):\n        item = crawlinatorItem()\n        item['id'] = hashlib.sha256(response.url.encode('utf-8')).hexdigest()\n        item['title'] = response.css('title::text').extract_first()\n        item['url'] = response.url\n        item['status'] = response.status\n        item['body'] = response.text\n        return item "
         with open("crawlinator/spiders/" + name + ".py", "w") as text_file:
             print(newScript, file=text_file)
+    else:
+        newScript = "from crawlinator.items import crawlinatorItem\nimport scrapy\nfrom loginform import " \
+                    "fill_login_form\nfrom scrapy.linkextractors import LinkExtractor\nfrom scrapy.spiders import " \
+                    "CrawlSpider, Rule\nimport hashlib\nclass " + name + "Spider(CrawlSpider):\n    " \
+                                                                         "handle_httpstatus_list = [400, 403, 404, " \
+                                                                         "500, 502, 503, 504]\n    name = '" + name + \
+                    "'\n    allowed_domains = ['onion']\n    start_urls = ['" + url + "']\n    login_url = '" + \
+                    loginUrl + "'\n    login_password = '" + password + "'\n    login_user = '" + username + "'\n    " \
+                                                                                                             "custom_settings = {\n        'LOG_FILE': 'logs/" + name + ".log',\n        'LOG_LEVEL': 'INFO'\n " \
+                                                                                                                                                                        "   }\n    rules = (\n        Rule(\n  " \
+                                                                                                                                                                        "          LinkExtractor(\n            " \
+                                                                                                                                                                        "    tags='a',\n                " \
+                                                                                                                                                                        "attrs='href',\n                " \
+                                                                                                                                                                        "unique=True\n            )," \
+                                                                                                                                                                        "\n            callback='parse_item'," \
+                                                                                                                                                                        "\n            follow=True\n        )," \
+                                                                                                                                                                        "\n    )\n    def start_requests(" \
+                                                                                                                                                                        "self):\n        yield scrapy.Request(" \
+                                                                                                                                                                        "self.login_url, self.parse_login)\n   " \
+                                                                                                                                                                        " def parse_login(self, response):\n   " \
+                                                                                                                                                                        "     data, url, " \
+                                                                                                                                                                        "method = fill_login_form(" \
+                                                                                                                                                                        "response.url, response.body, " \
+                                                                                                                                                                        "self.login_user, " \
+                                                                                                                                                                        "self.login_password)\n        return " \
+                                                                                                                                                                        "scrapy.FormRequest(url, " \
+                                                                                                                                                                        "formdata=dict(data), method=method, " \
+                                                                                                                                                                        "callback=self.start_crawl)\n    " \
+                                                                                                                                                                        "def start_crawl(self, response):\n    " \
+                                                                                                                                                                        "    for url in self.start_urls:\n     " \
+                                                                                                                                                                        "       yield scrapy.Request(url)\n    " \
+                                                                                                                                                                        "def parse_item(self, response):\n     " \
+                                                                                                                                                                        "   item = crawlinatorItem()\n        " \
+                                                                                                                                                                        "item['id'] = hashlib.sha256(" \
+                                                                                                                                                                        "response.url.encode(" \
+                                                                                                                                                                        "'utf-8')).hexdigest()\n        item[" \
+                                                                                                                                                                        "'title'] = response.css(" \
+                                                                                                                                                                        "'title::text').extract_first()\n      " \
+                                                                                                                                                                        "  item['url'] = response.url\n        " \
+                                                                                                                                                                        "item['status'] = response.status\n    " \
+                                                                                                                                                                        "    item['body'] = response.text\n    " \
+                                                                                                                                                                        "    return item "
+        with open("crawlinator/spiders/" + name + ".py", "w") as text_file:
+            print(newScript, file=text_file)
+
 
 if __name__ == "__main__":
     root = tk.Tk()
@@ -118,16 +184,15 @@ if __name__ == "__main__":
     findCrawlers()
 
     btnRefresh = tk.Button(frame, text="Refresh Crawlers", padx="10", pady="10", fg="black", bg="#f8f8f8",
-                            command=findCrawlers)
+                           command=findCrawlers)
     btnRefresh.pack()
 
     btnCrawl = tk.Button(frame, text="Crawl", padx="10", pady="10", fg="black", bg="#f8f8f8",
                          command=lambda: runCrawler(listbox.get(listbox.curselection())))
     btnCrawl.pack()
 
-
     buttonExample = tk.Button(frame,
-                              text="Create new crawler with login",padx="10", pady="10", fg="black", bg="#f8f8f8",
+                              text="Create new crawler with login", padx="10", pady="10", fg="black", bg="#f8f8f8",
                               command=openCreateNewLoginScraper)
     buttonExample.pack()
 
