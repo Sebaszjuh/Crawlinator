@@ -112,6 +112,13 @@ def hashPassword(password):
     return encrypted
 
 
+def checkHash(savedHashPassword, inputPassword):
+    if savedHashPassword == hashPassword(inputPassword):
+        return inputPassword
+    else:
+        return
+
+
 def createNewScript(username, password, url, loginUrl, name):
     if username == "" and password == "" and loginUrl == "":
         newScript = "from scrapy.linkextractors import LinkExtractor\nfrom scrapy.spiders import CrawlSpider, " \
@@ -186,6 +193,10 @@ if __name__ == "__main__":
     btnRefresh = tk.Button(frame, text="Refresh Crawlers", padx="10", pady="10", fg="black", bg="#f8f8f8",
                            command=findCrawlers)
     btnRefresh.pack()
+
+    passwordTextbox = tk.Entry(frame, width=25, bg="#FFC0CB")
+    passwordTextbox.insert(0, 'Fill in password to crawl')
+    passwordTextbox.pack()
 
     btnCrawl = tk.Button(frame, text="Crawl", padx="10", pady="10", fg="black", bg="#f8f8f8",
                          command=lambda: runCrawler(listbox.get(listbox.curselection())))
