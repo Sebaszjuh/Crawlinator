@@ -15,7 +15,7 @@ class appSearchPipeline(object):
     def process_item(self, item, spider):
         client = Client(
             base_endpoint='localhost:3002/api/as/v1',
-            api_key='private-rroqq5xvcfsirvhwsbaihst4',
+            api_key='private-yvmokwy6ab1mc4tw45c66e1o',
             use_https=False
         )
         engine_name = 'crawlinator'

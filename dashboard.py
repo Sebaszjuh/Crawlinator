@@ -7,6 +7,7 @@ from scrapy.utils.project import get_project_settings
 import importlib
 import multiprocessing
 import hashlib
+from crawlinator.spiders import tor
 
 
 def findCrawlers():
@@ -22,25 +23,25 @@ def findCrawlers():
 
 def runCrawler(crawlerName):
     className = getClassName(crawlerName)
+    crawlerObject = import_from("crawlinator.spiders." + crawlerName[:-3], className)
+    try:
+        if crawlerObject.login_password:
+            openCrawlSpiderWithLoginPasswordPlease(crawlerObject, className, crawlerName)
+    except:
+        p = multiprocessing.Process(target=runCrawlerScript, args=(crawlerName, className))
+        p.start()
 
-    p = multiprocessing.Process(target=runCrawlerScript, args=(crawlerName, className))
-    p.start()
+        btnStop = tk.Button(frame, text="Stop crawling " + className, padx="10", pady="10", fg="black", bg="#f8f8f8",
+                            command=lambda: stopCrawler(p, btnStop))
+        btnStop.pack()
 
-    btnStop = tk.Button(frame, text="Stop crawling " + className, padx="10", pady="10", fg="black", bg="#f8f8f8",
-                        command=lambda: stopCrawler(p, btnStop))
-    btnStop.pack()
 
 
 def runCrawlerScript(crawlerName, className):
-    print("HALLOOOOOOO1")
     import_from("crawlinator.spiders." + crawlerName[:-3], className)
-    print("HALLOOOOOOO2")
     process = CrawlerProcess(get_project_settings())
-    print("HALLOOOOOOO3")
     process.crawl(crawlerName[:-3])
-    print("HALLOOOOOOO4")
     process.start()
-
 
 def stopCrawler(process, btnStop):
     process.terminate()
@@ -93,7 +94,7 @@ def openCreateNewLoginScraper():
     usernameTextbox.pack()
     label = Label(newWindow, text="Password", bg="#FFC0CB")
     label.pack()
-    passwordTextbox = tk.Entry(newWindow, width=25, bg="#FFC0CB")
+    passwordTextbox = tk.Entry(newWindow, show="*", width=25, bg="#FFC0CB")
     passwordTextbox.pack()
     btnAddCrawler = tk.Button(newWindow, text="Create crawler", padx="10", pady="10", fg="black", bg="#f8f8f8",
                               command=lambda: createNewScript(usernameTextbox.get(),
@@ -103,10 +104,37 @@ def openCreateNewLoginScraper():
     btnAddCrawler.pack()
 
 
+def runPasswordCrawler(crawlerObject, className, password, crawlerName):
+    if checkHash(crawlerObject.login_password, password):
+        crawlerObject.login_password = password
+
+        p = multiprocessing.Process(target=runCrawlerScript, args=(crawlerName, className))
+        p.start()
+
+        btnStop = tk.Button(frame, text="Stop crawling " + className, padx="10", pady="10", fg="black", bg="#f8f8f8",
+                            command=lambda: stopCrawler(p, btnStop))
+        btnStop.pack()
+    else:
+        print("wachtwoord fout")
+
+
+def openCrawlSpiderWithLoginPasswordPlease(crawlerObject, className, crawlerName):
+    newWindow = tk.Toplevel(root, bg="#FFC0CB")
+    label = Label(newWindow, text="Crawler password", bg="#FFC0CB")
+    label.pack()
+    crawlerPasswordTextbox = tk.Entry(newWindow,show="*", width=25, bg="#FFC0CB")
+
+
+    crawlerPasswordTextbox.pack()
+    btnRunCrawler = tk.Button(newWindow, text="Create crawler", padx="10", pady="10", fg="black", bg="#f8f8f8",
+                              command=lambda: runPasswordCrawler(crawlerObject, className, crawlerPasswordTextbox.get(), crawlerName))
+    btnRunCrawler.pack()
+
+
 def hashPassword(password):
-    salt = "-WOu@p.Za,>W+6&`A63/"
+    salt = "éJ!L@iL^9;1n#çàé"
     user_password = password
-    sha = hashlib.sha256()
+    sha = hashlib.sha512()
     sha.update((user_password + salt).encode('utf-8'))
     encrypted = sha.hexdigest()
     return encrypted
@@ -114,7 +142,7 @@ def hashPassword(password):
 
 def checkHash(savedHashPassword, inputPassword):
     if savedHashPassword == hashPassword(inputPassword):
-        return inputPassword
+        return True
     else:
         return
 
@@ -173,6 +201,7 @@ def createNewScript(username, password, url, loginUrl, name):
 
 
 if __name__ == "__main__":
+
     root = tk.Tk()
 
     canvas = tk.Canvas(root, height=500, width=500, bg='#ffffff')
@@ -193,10 +222,6 @@ if __name__ == "__main__":
     btnRefresh = tk.Button(frame, text="Refresh Crawlers", padx="10", pady="10", fg="black", bg="#f8f8f8",
                            command=findCrawlers)
     btnRefresh.pack()
-
-    passwordTextbox = tk.Entry(frame, width=25, bg="#FFC0CB")
-    passwordTextbox.insert(0, 'Fill in password to crawl')
-    passwordTextbox.pack()
 
     btnCrawl = tk.Button(frame, text="Crawl", padx="10", pady="10", fg="black", bg="#f8f8f8",
                          command=lambda: runCrawler(listbox.get(listbox.curselection())))
