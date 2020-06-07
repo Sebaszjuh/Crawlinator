@@ -9,8 +9,8 @@
 
 ```conda create -n crawlinator```
 ```conda activate crawlinator```
-```conda install --file requirements.txt```
-```pip install elastic-app-search```
+```conda install --file conda_requirements.txt```
+```pip install -r requirements.txt```
 
 ## Development
 
@@ -18,7 +18,7 @@
 - Go to [localhost:3002](http://localhost:3002)
 - Create an engine called: `crawlinator`
 - Go to [http://localhost:3002/as#/credentials](http://localhost:3002/as#/credentials)
-- Copy the private key and replace it in `crawlinator/pipelines.py`
+- Copy the private key and replace it in `.env`
 - Copy the search key and replace tin in `crawlinator-ui/src/config/engine.json`
 
 You only have to do the above steps once everytime you run `docker-compose up`
@@ -31,6 +31,3 @@ To work on the Spider you do the following
 4. Repeat from step 1.
 
 *Note: Design a spider the same as tortest including: Date, Time, DateTime, URL, Title, Body, status. Else the UI will crash
-
-
-
