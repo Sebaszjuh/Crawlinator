@@ -9,8 +9,8 @@
 
 ```conda create -n crawlinator```
 ```conda activate crawlinator```
-```conda install --file requirements.txt```
-```pip install elastic-app-search```
+```conda install --file conda_requirements.txt```
+```pip install -r requirements.txt```
 
 ## Development
 
@@ -31,6 +31,3 @@ To work on the Spider you do the following
 4. Repeat from step 1.
 
 *Note: Design a spider the same as tortest including: Date, Time, DateTime, URL, Title, Body, status. Else the UI will crash
-
-
-
