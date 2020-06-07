@@ -11,6 +11,7 @@ elastic-app-search==7.7.0
 hyperlink==19.0.0
 idna==2.9
 incremental==17.5.0
+loginform==1.2.0
 lxml==4.5.0
 more-itertools==8.3.0
 packaging==20.3
