@@ -7,7 +7,7 @@ import ast
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 import importlib
-from .crawlinator.spiders.ziggo import ZiggoSpider
+
 
 def findCrawlers():
     default_path = str(Path(__file__).parent.parent) + "/crawlinator/spiders"
@@ -17,6 +17,7 @@ def findCrawlers():
         listbox.insert(END, file)
 
     return files
+
 
 def runCrawler(crawlerName):
     className = getClassName(crawlerName)
