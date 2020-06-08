@@ -75,26 +75,28 @@ def getClassName(crawlerName):
 
 
 def openCreateNewLoginScraper():
-    newWindow = tk.Toplevel(root, bg="#FFC0CB")
-    label = Label(newWindow, text="Crawler name", bg="#FFC0CB")
+    newWindow = tk.Toplevel(root, bg="#FFFFFF")
+    label = Label(newWindow, text="Crawler name", bg="#FFFFFF")
     label.pack()
-    nameTextbox = tk.Entry(newWindow, width=25, bg="#FFC0CB")
+    nameTextbox = tk.Entry(newWindow, width=25, bg="#FFFFFF")
     nameTextbox.pack()
-    label = Label(newWindow, text="Start url", bg="#FFC0CB")
+    label = Label(newWindow, text="Start url", bg="#FFFFFF")
     label.pack()
-    startUrlTextbox = tk.Entry(newWindow, width=25, bg="#FFC0CB")
+    startUrlTextbox = tk.Entry(newWindow, width=25, bg="#FFFFFF")
     startUrlTextbox.pack()
-    label = Label(newWindow, text="Login url", bg="#FFC0CB")
+    label = Label(newWindow, text="Fill out if login is required:", bg="#FFFFFF")
     label.pack()
-    loginUrlTextbox = tk.Entry(newWindow, width=25, bg="#FFC0CB")
+    label = Label(newWindow, text="Login url", bg="#FFFFFF")
+    label.pack()
+    loginUrlTextbox = tk.Entry(newWindow, width=25, bg="#FFFFFF")
     loginUrlTextbox.pack()
-    label = Label(newWindow, text="Username", bg="#FFC0CB")
+    label = Label(newWindow, text="Username", bg="#FFFFFF")
     label.pack()
-    usernameTextbox = tk.Entry(newWindow, width=25, bg="#FFC0CB")
+    usernameTextbox = tk.Entry(newWindow, width=25, bg="#FFFFFF")
     usernameTextbox.pack()
-    label = Label(newWindow, text="Password", bg="#FFC0CB")
+    label = Label(newWindow, text="Password", bg="#FFFFFF")
     label.pack()
-    passwordTextbox = tk.Entry(newWindow, show="*", width=25, bg="#FFC0CB")
+    passwordTextbox = tk.Entry(newWindow, show="*", width=25, bg="#FFFFFF")
     passwordTextbox.pack()
     btnAddCrawler = tk.Button(newWindow, text="Create crawler", padx="10", pady="10", fg="black", bg="#f8f8f8",
                               command=lambda: createNewScript(usernameTextbox.get(),
@@ -119,25 +121,30 @@ def runPasswordCrawler(crawlerObject, className, password, crawlerName):
 
 
 def openCrawlSpiderWithLoginPasswordPlease(crawlerObject, className, crawlerName):
-    newWindow = tk.Toplevel(root, bg="#FFC0CB")
-    label = Label(newWindow, text="Crawler password", bg="#FFC0CB")
+    newWindow = tk.Toplevel(root, bg="#FFFFFF")
+    label = Label(newWindow, text="Crawler password", bg="#FFFFFF")
     label.pack()
-    crawlerPasswordTextbox = tk.Entry(newWindow,show="*", width=25, bg="#FFC0CB")
+    crawlerPasswordTextbox = tk.Entry(newWindow,show="*", width=25, bg="#FFFFFF")
 
 
     crawlerPasswordTextbox.pack()
-    btnRunCrawler = tk.Button(newWindow, text="Create crawler", padx="10", pady="10", fg="black", bg="#f8f8f8",
+    btnRunCrawler = tk.Button(newWindow, text="Start crawler", padx="10", pady="10", fg="black", bg="#f8f8f8",
                               command=lambda: runPasswordCrawler(crawlerObject, className, crawlerPasswordTextbox.get(), crawlerName))
     btnRunCrawler.pack()
 
 
 def hashPassword(password):
-    salt = "éJ!L@iL^9;1n#çàé"
-    user_password = password
-    sha = hashlib.sha512()
-    sha.update((user_password + salt).encode('utf-8'))
-    encrypted = sha.hexdigest()
-    return encrypted
+    newpassword = ""
+    if password != "":
+        salt = "éJ!L@iL^9;1n#çàé"
+        user_password = password
+        sha = hashlib.sha512()
+        sha.update((user_password + salt).encode('utf-8'))
+        encrypted = sha.hexdigest()
+        newpassword = encrypted
+
+    return newpassword
+
 
 
 def checkHash(savedHashPassword, inputPassword):
@@ -148,15 +155,19 @@ def checkHash(savedHashPassword, inputPassword):
 
 
 def createNewScript(username, password, url, loginUrl, name):
+    print(username)
+    print(password)
+    print(loginUrl)
     if username == "" and password == "" and loginUrl == "":
         newScript = "from scrapy.linkextractors import LinkExtractor\nfrom scrapy.spiders import CrawlSpider, " \
-                    "Rule\nfrom crawlinator.items import crawlinatorItem\nimport hashlib\nclass " + name + "Spider(" \
-                                                                                                           "CrawlSpider):\n    handle_httpstatus_list = [400, 403, 404, 500, 502, 503, 504]\n    name = '" + name + "'\n    allowed_domains = ['" + url + "']\n    start_urls = ['" + url + "']\n    custom_settings = {\n        'LOG_FILE': 'logs/" + name + ".log',\n        'LOG_LEVEL': 'INFO'\n    }\n    rules = (\n        Rule(\n            LinkExtractor(\n                tags='a',\n                attrs='href',\n                unique=True\n            ),\n            callback='parse_item',\n            follow=True\n        ),\n    )\n    def parse_item(self, response):\n        item = crawlinatorItem()\n        item['id'] = hashlib.sha256(response.url.encode('utf-8')).hexdigest()\n        item['title'] = response.css('title::text').extract_first()\n        item['url'] = response.url\n        item['status'] = response.status\n        item['body'] = response.text\n        return item "
+                    "Rule\nfrom crawlinator.items import crawlinatorItem\nfrom datetime import datetime\nimport urllib\nimport hashlib\nclass " + name + "Spider(" \
+                                                                                                           "CrawlSpider):\n    handle_httpstatus_list = [400, 403, 404, 500, 502, 503, 504]\n    name = '" + name + "'\n    start_urls = ['" + url + "']\n    custom_settings = {\n        'LOG_FILE': 'logs/" + name + ".log',\n        'LOG_LEVEL': 'INFO'\n    }\n    rules = (\n        Rule(\n            LinkExtractor(\n                tags='a',\n                attrs='href',\n                unique=True\n            ),\n            callback='parse_item',\n            follow=True\n        ),\n    )\n    def parse_item(self, response):\n        item = crawlinatorItem()\n        item['id'] = hashlib.sha256(response.url.encode('utf-8')).hexdigest()\n        item['title'] = response.css('title::text').extract_first()\n        item['url'] = response.url\n        item['status'] = response.status\n        item['body'] = response.text\n        item['date'] = datetime.today().strftime('%d/%m/%Y')\n        item['time'] = datetime.today().strftime('%H:%M:%S')\n        item['datetime'] = item['date'] + ', ' + item['time']\n        item['threat'] = list(set([\n            word.lower()\n            for word in self.threat_keywords()\n            if response.xpath('//*[contains(text(),\"%s\")]' % word)\n        ]))\n        return item\n    def make_usable_url(self, url):\n        split = urllib.parse.urlsplit(url)\n        split = split._replace(netloc=f'{split.netloc}.sh')\n        return urllib.parse.urlunsplit(split)\n    def threat_keywords(self):\n        keywords = []\n        for word in open('keyword-list.txt', 'r'):\n            keywords.append(word.rstrip('\\n'))\n        return keywords"
+        print (newScript)
         with open("crawlinator/spiders/" + name + ".py", "w") as text_file:
             print(newScript, file=text_file)
     else:
         newScript = "from crawlinator.items import crawlinatorItem\nimport scrapy\nfrom loginform import " \
-                    "fill_login_form\nfrom scrapy.linkextractors import LinkExtractor\nfrom scrapy.spiders import " \
+                    "fill_login_form\nfrom scrapy.linkextractors import LinkExtractor\nfrom datetime import datetime\nimport urllib\nfrom scrapy.spiders import " \
                     "CrawlSpider, Rule\nimport hashlib\nclass " + name + "Spider(CrawlSpider):\n    " \
                                                                          "handle_httpstatus_list = [400, 403, 404, " \
                                                                          "500, 502, 503, 504]\n    name = '" + name + \
@@ -194,8 +205,8 @@ def createNewScript(username, password, url, loginUrl, name):
                                                                                                                                                                         "'title::text').extract_first()\n      " \
                                                                                                                                                                         "  item['url'] = response.url\n        " \
                                                                                                                                                                         "item['status'] = response.status\n    " \
-                                                                                                                                                                        "    item['body'] = response.text\n    " \
-                                                                                                                                                                        "    return item "
+                                                                                                                                                                        "    item['body'] = response.text\n        item['date'] = datetime.today().strftime('%d/%m/%Y')\n        item['time'] = datetime.today().strftime('%H:%M:%S')\n        item['datetime'] = item['date'] + ', ' + item['time']\n        item['threat'] = list(set([\n            word.lower()\n            for word in self.threat_keywords()\n            if response.xpath('//*[contains(text(),\"%s\")]' % word)\n        ]))\n" \
+                                                                                                                                                                        "        return item\n    def make_usable_url(self, url):\n        split = urllib.parse.urlsplit(url)\n        split = split._replace(netloc=f'{split.netloc}.sh')\n        return urllib.parse.urlunsplit(split)\n    def threat_keywords(self):\n        keywords = []\n        for word in open('keyword-list.txt', 'r'):\n            keywords.append(word.rstrip('\\n'))\n        return keywords"
         with open("crawlinator/spiders/" + name + ".py", "w") as text_file:
             print(newScript, file=text_file)
 
@@ -204,13 +215,13 @@ if __name__ == "__main__":
 
     root = tk.Tk()
 
-    canvas = tk.Canvas(root, height=500, width=500, bg='#ffffff')
+    canvas = tk.Canvas(root, height=500, width=300, bg='#ffffff')
     canvas.pack()
 
-    frame = tk.Frame(root, bg="#FFC0CB")
+    frame = tk.Frame(root, bg="#FFFFFF")
     frame.place(relwidth=1, relheight=1)
 
-    label = Label(frame, text="Crawlinator Dashboard", bg="#FFC0CB")
+    label = Label(frame, text="Crawlinator Dashboard", bg="#FFFFFF")
     label.config(font=("Courier", 22))
     label.pack()
 
@@ -228,11 +239,11 @@ if __name__ == "__main__":
     btnCrawl.pack()
 
     buttonExample = tk.Button(frame,
-                              text="Create new crawler with login", padx="10", pady="10", fg="black", bg="#f8f8f8",
+                              text="Create new crawler", padx="10", pady="10", fg="black", bg="#f8f8f8",
                               command=openCreateNewLoginScraper)
     buttonExample.pack()
 
-    label = Label(frame, text="Running crawlers:", bg="#FFC0CB")
+    label = Label(frame, text="Running crawlers:", bg="#FFFFFF")
     label.pack()
 
     root.mainloop()
