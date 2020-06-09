@@ -28,6 +28,8 @@ services:
     image: dperson/torproxy
     ports:
       - 8118:8118
+    environment:
+      - "LOCATION=DE"
   
   ui:
     build: crawlinator-ui

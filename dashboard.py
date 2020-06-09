@@ -25,7 +25,7 @@ def runCrawler(crawlerName):
     className = getClassName(crawlerName)
     crawlerObject = import_from("crawlinator.spiders." + crawlerName[:-3], className)
     try:
-        if crawlerObject.login_password:
+        if crawlerObject.hashed_login_password:
             openCrawlSpiderWithLoginPasswordPlease(crawlerObject, className, crawlerName)
     except:
         p = multiprocessing.Process(target=runCrawlerScript, args=(crawlerName, className))
@@ -37,10 +37,10 @@ def runCrawler(crawlerName):
 
 
 
-def runCrawlerScript(crawlerName, className):
+def runCrawlerScript(crawlerName, className, login_password = None):
     import_from("crawlinator.spiders." + crawlerName[:-3], className)
     process = CrawlerProcess(get_project_settings())
-    process.crawl(crawlerName[:-3])
+    process.crawl(crawlerName[:-3], login_password=login_password)
     process.start()
 
 def stopCrawler(process, btnStop):
@@ -107,10 +107,8 @@ def openCreateNewLoginScraper():
 
 
 def runPasswordCrawler(crawlerObject, className, password, crawlerName):
-    if checkHash(crawlerObject.login_password, password):
-        crawlerObject.login_password = password
-
-        p = multiprocessing.Process(target=runCrawlerScript, args=(crawlerName, className))
+    if checkHash(crawlerObject.hashed_login_password, password):
+        p = multiprocessing.Process(target=runCrawlerScript, args=(crawlerName, className, password))
         p.start()
 
         btnStop = tk.Button(frame, text="Stop crawling " + className, padx="10", pady="10", fg="black", bg="#f8f8f8",
@@ -172,7 +170,7 @@ def createNewScript(username, password, url, loginUrl, name):
                                                                          "handle_httpstatus_list = [400, 403, 404, " \
                                                                          "500, 502, 503, 504]\n    name = '" + name + \
                     "'\n    allowed_domains = ['onion']\n    start_urls = ['" + url + "']\n    login_url = '" + \
-                    loginUrl + "'\n    login_password = '" + password + "'\n    login_user = '" + username + "'\n    " \
+                    loginUrl + "'\n    hashed_login_password = '" + password + "'\n    login_user = '" + username + "'\n    " \
                                                                                                              "custom_settings = {\n        'LOG_FILE': 'logs/" + name + ".log',\n        'LOG_LEVEL': 'INFO'\n " \
                                                                                                                                                                         "   }\n    rules = (\n        Rule(\n  " \
                                                                                                                                                                         "          LinkExtractor(\n            " \
@@ -210,6 +208,9 @@ def createNewScript(username, password, url, loginUrl, name):
         with open("crawlinator/spiders/" + name + ".py", "w") as text_file:
             print(newScript, file=text_file)
 
+def deleteselectedcrawler():
+    os.remove("crawlinator/spiders/" + listbox.get(listbox.curselection()))
+    findCrawlers()
 
 if __name__ == "__main__":
 
@@ -233,6 +234,10 @@ if __name__ == "__main__":
     btnRefresh = tk.Button(frame, text="Refresh Crawlers", padx="10", pady="10", fg="black", bg="#f8f8f8",
                            command=findCrawlers)
     btnRefresh.pack()
+
+    btnDelete = tk.Button(frame, text="Delete selected crawler", padx="10", pady="10", fg="black", bg="#f8f8f8",
+                           command=deleteselectedcrawler)
+    btnDelete.pack()
 
     btnCrawl = tk.Button(frame, text="Crawl", padx="10", pady="10", fg="black", bg="#f8f8f8",
                          command=lambda: runCrawler(listbox.get(listbox.curselection())))

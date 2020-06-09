@@ -12,7 +12,7 @@ class jonkodonkoSpider(CrawlSpider):
     allowed_domains = ['onion']
     start_urls = ['http://thestock6nonb74owd6utzh4vld3xsf2n2fwxpwywjgq7maj47mvwmid.onion/viewforum.php?f=18']
     login_url = 'http://thestock6nonb74owd6utzh4vld3xsf2n2fwxpwywjgq7maj47mvwmid.onion/viewtopic.php?f=27&t=733'
-    login_password = '3c1ba8e9971f7cd3b2433e52bac80dc0641490e745ff86bc77b7faa711da0217d28dd45dfe08a8c6bf86fc5b4881224420d8935a6bd4ed78d640f75c6abd475e'
+    hashed_login_password = '3c1ba8e9971f7cd3b2433e52bac80dc0641490e745ff86bc77b7faa711da0217d28dd45dfe08a8c6bf86fc5b4881224420d8935a6bd4ed78d640f75c6abd475e'
     login_user = 'jonkodonko'
     custom_settings = {
         'LOG_FILE': 'logs/jonkodonko.log',

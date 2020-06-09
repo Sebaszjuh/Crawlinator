@@ -14,7 +14,7 @@ class TorSpider(CrawlSpider):
     # Replace the value with the real domain.
     allowed_domains = ['onion']
     # Replace the value with the website URL to crawl from.
-    start_urls = ['http://hiddenwiki7wiyzr.onion/']
+    start_urls = ['http://jh32yv5zgayyyts3.onion/']
     custom_settings = {
         'LOG_FILE': 'logs/tor.log',
         'LOG_LEVEL': 'INFO'
