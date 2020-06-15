@@ -10,11 +10,11 @@ import urllib
 
 class TorSpider(CrawlSpider):
     handle_httpstatus_list = [200]
-    name = 'tortest'
+    name = 'tor'
     # Replace the value with the real domain.
     allowed_domains = ['onion']
     # Replace the value with the website URL to crawl from.
-    start_urls = ['http://hiddenwiki7wiyzr.onion/']
+    start_urls = ['http://jh32yv5zgayyyts3.onion/']
     custom_settings = {
         'LOG_FILE': 'logs/tor.log',
         'LOG_LEVEL': 'INFO'
@@ -39,8 +39,8 @@ class TorSpider(CrawlSpider):
         item['url'] = self.make_usable_url(response.url)
         item['status'] = response.status
         item['body'] = response.text
-        item['date'] = datetime.today().strftime("%d/%m/%Y")
-        item['time'] = datetime.today().strftime("%H:%M:%S")
+        item['date'] = datetime.today().strftime('%d/%m/%Y')
+        item['time'] = datetime.today().strftime('%H:%M:%S')
         item['datetime'] = item['date'] + ", " + item['time']
 
         item['threat'] = list(set([
