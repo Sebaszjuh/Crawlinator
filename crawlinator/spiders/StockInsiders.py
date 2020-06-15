@@ -6,16 +6,16 @@ from datetime import datetime
 import urllib
 from scrapy.spiders import CrawlSpider, Rule
 import hashlib
-class jonkodonkoSpider(CrawlSpider):
+class StockInsidersSpider(CrawlSpider):
     handle_httpstatus_list = [400, 403, 404, 500, 502, 503, 504]
-    name = 'jonkodonko'
+    name = 'StockInsiders'
     allowed_domains = ['onion']
-    start_urls = ['http://thestock6nonb74owd6utzh4vld3xsf2n2fwxpwywjgq7maj47mvwmid.onion/viewforum.php?f=18']
-    login_url = 'http://thestock6nonb74owd6utzh4vld3xsf2n2fwxpwywjgq7maj47mvwmid.onion/viewtopic.php?f=27&t=733'
+    start_urls = ['http://thestock6nonb74owd6utzh4vld3xsf2n2fwxpwywjgq7maj47mvwmid.onion/']
+    login_url = 'http://thestock6nonb74owd6utzh4vld3xsf2n2fwxpwywjgq7maj47mvwmid.onion/ucp.php?mode=login'
     hashed_login_password = '3c1ba8e9971f7cd3b2433e52bac80dc0641490e745ff86bc77b7faa711da0217d28dd45dfe08a8c6bf86fc5b4881224420d8935a6bd4ed78d640f75c6abd475e'
     login_user = 'jonkodonko'
     custom_settings = {
-        'LOG_FILE': 'logs/jonkodonko.log',
+        'LOG_FILE': 'logs/StockInsiders.log',
         'LOG_LEVEL': 'INFO'
     }
     rules = (
