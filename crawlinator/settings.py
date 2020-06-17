@@ -100,4 +100,4 @@ ITEM_PIPELINES = {
 # Disable retries
 RETRY_ENABLED = True
 # Reduce download timeout
-DOWNLOAD_TIMEOUT = 15
+DOWNLOAD_TIMEOUT = 60
