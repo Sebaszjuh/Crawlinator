@@ -20,7 +20,7 @@ services:
     - "elasticsearch.host=http://elasticsearch:9200"
     - "allow_es_settings_modification=true"
     - "JAVA_OPTS=-Xms2g -Xmx2g"
-    - "secret_session_key=private-d9prbvb7d4yd6n63shn84ins"
+    - "secret_session_key=PUT_SECRET_SESSION_KEY_HERE"
     ports:
     - 3002:3002
 

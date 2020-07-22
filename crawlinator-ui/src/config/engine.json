@@ -1,8 +1,8 @@
 {
-  "engineName": "crawlinator",
-  "hostIdentifier": "host-b2w7b8",
-  "endpointBase": "http://localhost:3002",
-  "searchKey": "search-eupotc7uqtnd4nhhik8zrn6c",
+  "engineName": "ENGINE_NAME_HERE",
+  "hostIdentifier": "ENGINE_HOST_IDENTIFIER",
+  "endpointBase": "ENDPOINT_HERE",
+  "searchKey": "SEARCH_KEY_HERE",
   "resultFields": [
     "title",
     "url",
