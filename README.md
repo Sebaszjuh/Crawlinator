@@ -1,7 +1,9 @@
 # CrawlinaTOR
 
 ## Information
-This was a school project for a cybersecurity semester, it is a Python / Scrapy based crawler which crawls and scrapes the TOR network through a TOR-proxy
+This was a school project for a cybersecurity semester, it is a Python / Scrapy based crawler which crawls and scrapes the TOR network through a TOR-proxy.
+
+It also includes a python UI based gui for creating login forums on the tor network
 
 ## Prerequisites
 
