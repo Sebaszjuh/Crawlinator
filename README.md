@@ -1,5 +1,8 @@
 # CrawlinaTOR
 
+## Information
+This was a school project for a cybersecurity semester, it is a Python / Scrapy based crawler which crawls and scrapes the TOR network through a TOR-proxy
+
 ## Prerequisites
 
 - Docker
@@ -31,3 +34,4 @@ To work on the Spider you do the following
 4. Repeat from step 1.
 
 *Note: Design a spider the same as tortest including: Date, Time, DateTime, URL, Title, Body, status. Else the UI will crash
+
